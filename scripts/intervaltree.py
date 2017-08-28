@@ -39,7 +39,7 @@ class IntervalTree:
 		if end:
 			result = []
  
-			for j in xrange(begin, end+1):
+			for j in range(begin, end+1):
 				for k in self.search(j):
 					result.append(k)
 				result = list(set(result))

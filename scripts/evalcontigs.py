@@ -98,7 +98,7 @@ def eval_contigs(ref_path, contig_path, temp_folder, generate_kmer_spectrum=Fals
 	num_valid_contigs = 0;
 
 	single_contig_path = '%s/singlecontig.fasta' % (temp_folder);
-	for i in xrange(0, len(seqs_contigs)):
+	for i in range(0, len(seqs_contigs)):
 		contig_name = headers_contigs[i].split()[0];
 		contig_seq = seqs_contigs[i];
 
@@ -247,7 +247,7 @@ def parse_coords_lines(lines, contig_name, seqs_ref, ref_hash, seqs_contigs, con
 
 def hash_headers(headers):
 	ret = {};
-	for i in xrange(0, len(headers)):
+	for i in range(0, len(headers)):
 		ret[headers[i]] = i;
 		ret[headers[i].split()[0]] = i;
 	return ret;
@@ -281,7 +281,7 @@ def main():
 	temp_path = None;
 	silent_mode = False;
 
-	for i in xrange(3, len(sys.argv)):
+	for i in range(3, len(sys.argv)):
 		arg = sys.argv[i];
 		if (arg == '--temp-path'):
 			temp_path = sys.argv[i+1];

@@ -87,7 +87,7 @@ def get_circular_score(ref_path, contig_path, temp_folder):
 	fp_fwd = open(circularized_fwd_path, 'w');
 	fp_rev = open(circularized_rev_path, 'w');
 
-	for i in xrange(0, len(seqs_ref)):
+	for i in range(0, len(seqs_ref)):
 		rev_seq = fastqparser.revcomp_seq(seqs_ref[i]);
 		rev_qual = quals_ref[i][::-1];
 		# if (len(quals_ref) > 0):
@@ -112,7 +112,7 @@ def get_circular_score(ref_path, contig_path, temp_folder):
 	command = '%s %s %s -m HW' % (EDLIB_PATH, contig_path, circularized_rev_path);
 	[rc_rev, rstdout_rev, rstderr_rev] = execute_command_with_ret(DRY_RUN, command);
 	scores_rev = parse_edlib_scores(rstdout_rev);
-	for i in xrange(0, len(scores_rev)):
+	for i in range(0, len(scores_rev)):
 		sys.stdout.write('[%d] %d %s\n' % (i, scores_rev[i], 'rev'));
 	sys.stdout.write('\n');
 
@@ -133,7 +133,7 @@ def eval_contigs(ref_path, contig_path, temp_folder, generate_kmer_spectrum=Fals
 	contig_hash = hash_headers(headers_contigs);
 
 	single_contig_path = '%s/singlecontig.fasta' % (temp_folder);
-	for i in xrange(0, len(seqs_contigs)):
+	for i in range(0, len(seqs_contigs)):
 		contig_name = headers_contigs[i].split()[0];
 		contig_seq = seqs_contigs[i];
 
@@ -157,11 +157,11 @@ def eval_contigs(ref_path, contig_path, temp_folder, generate_kmer_spectrum=Fals
 		lines = fp.readlines();
 		fp.close();
 		coords = parse_coords_lines(lines, contig_name, seqs_ref, ref_hash, seqs_contigs, contig_hash);
-		print '';
-		print 'coords: "%s"' % (coords);
-		print 'lines:';
+		print('');
+		print('coords: "%s"' % (coords));
+		print('lines:');
 		for line in lines:
-			print line;
+			print(line);
 		sys.stdout.flush();
 		[rstart, rend, qstart, qend, is_fwd, rname, qname] = coords;
 		extract_seqs_for_edlib(temp_folder, '.%d' % (i), ref_path, contig_path, rstart, rend, qstart, qend, is_fwd, rname, qname, generate_kmer_spectrum=generate_kmer_spectrum);
@@ -184,20 +184,20 @@ def parse_coords_lines(lines, contig_name, seqs_ref, ref_hash, seqs_contigs, con
 		if (len(line) == 0): continue;
 		if (line == '='*len(line)):
 			state_coord_lines = True;
-			print 'state_coord_lines = ', state_coord_lines;
+			print('state_coord_lines = ', state_coord_lines);
 			continue;
 		if (state_coord_lines == False):
 			continue;
 		if (line.endswith(contig_name) == False):
 			continue;
 
-		print line;
+		print(line);
 
 		sline = line.split();
-		print sline;
+		print(sline);
 		[curr_rstart, curr_rend, curr_qstart, curr_qend, curr_rname, curr_qname] = [int(sline[0]), int(sline[1]), int(sline[3]), int(sline[4]), sline[-2], sline[-1]];
 		fwd = True if (curr_qstart <= curr_qend) else False;
-		print 'fwd = ', fwd;
+		print('fwd = ', fwd);
 		if (len(all_frags) > 0 and curr_rname != all_frags[-1][-2]):
 			sys.stderr.write('ERROR: Fragments of one contig are not aligned to the same reference! Possible structural variant? Exiting.\n');
 			exit(1);
@@ -209,11 +209,11 @@ def parse_coords_lines(lines, contig_name, seqs_ref, ref_hash, seqs_contigs, con
 	# 	print frag;
 	# print num_fwd;
 	correct_orient = True if (num_fwd > (len(all_frags) / 2)) else False;
-	print 'correct_orient = ', correct_orient;
+	print('correct_orient = ', correct_orient);
 	all_frags = [val for val in all_frags if val[4] == correct_orient];
-	print 'Printing frags:';
+	print('Printing frags:');
 	for frag in all_frags:
-		print frag;
+		print(frag);
 	sys.stdout.flush();
 
 	if (len(all_frags) == 0):
@@ -280,7 +280,7 @@ def parse_coords_lines(lines, contig_name, seqs_ref, ref_hash, seqs_contigs, con
 
 def hash_headers(headers):
 	ret = {};
-	for i in xrange(0, len(headers)):
+	for i in range(0, len(headers)):
 		ret[headers[i]] = i;
 		ret[headers[i].split()[0]] = i;
 	return ret;
@@ -295,7 +295,7 @@ def extract_seqs_for_edlib(temp_folder, temp_suffix, ref_path, contig_path, rsta
 	ref_hash = hash_headers(headers_ref);
 	contig_hash = hash_headers(headers_contig);
 
-	print ref_hash;
+	print(ref_hash);
 
 	if ((rname in ref_hash) == False):
 		sys.stderr.write('ERROR: Reference name "%s" not found in file "%s"! Exiting.\n' % (rname, ref_path));
@@ -384,7 +384,7 @@ def main():
 	generate_kmer_spectrum = False;
 	temp_path = None;
 
-	for i in xrange(3, len(sys.argv)):
+	for i in range(3, len(sys.argv)):
 		arg = sys.argv[i];
 		if (arg == '--temp-path'):
 			temp_path = sys.argv[i+1];
